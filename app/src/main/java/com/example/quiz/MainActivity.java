@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -45,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         answer3c = findViewById(R.id.answer3c);
         answer3d = findViewById(R.id.answer3d);
 
+        CheckBox checkBoxsalzburg = findViewById(R.id.Salzburg);
+        CheckBox checkBoxberlin = findViewById(R.id.Berlin);
+        CheckBox checkBoxhamburg = findViewById(R.id.Hamburg);
+        CheckBox checkBoxwien = findViewById(R.id.Wien);
+
+
         mistakes = findViewById(R.id.textView);
 
         submitButton = findViewById(R.id.button);
@@ -53,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Check answer for question 1
+                boolean isWienChecked = checkBoxwien.isChecked();
+                boolean isBerlinChecked = checkBoxberlin.isChecked();
+                boolean isHamburgChecked = checkBoxhamburg.isChecked();
+                boolean isSalzburgChecked = checkBoxsalzburg.isChecked();
+
+                mistakes.setText("");
                 int selectedId1 = answerGroup1.getCheckedRadioButtonId();
                 if (selectedId1 == answer1b.getId()) {
                     score++;
@@ -76,12 +89,23 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     mistakes.setText(mistakes.getText().toString()+"The capital of Spain is Madrid\n");
                 }
-
-
-
-
+                if (isSalzburgChecked) {
+                    mistakes.setText(mistakes.getText().toString()+"Salzburg is not from Germany\n");
+                }
+                if (isWienChecked) {
+                    mistakes.setText(mistakes.getText().toString()+"Wien is not from Germany\n");
+                }
+                if (!isBerlinChecked) {
+                    mistakes.setText(mistakes.getText().toString()+"Berlin is also part of Germany\n");
+                }
+                if (!isHamburgChecked) {
+                    mistakes.setText(mistakes.getText().toString()+"Hamburg is also part of Germany\n");
+                }
+                if (isHamburgChecked && isBerlinChecked &&!isSalzburgChecked && !isWienChecked) {
+                    score+=1;
+                }
                 // Display result in toast
-                Toast.makeText(MainActivity.this, "Your score is: " + score + "/3", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Your score is: " + score + "/4", Toast.LENGTH_SHORT).show();
 
                 // Reset score
                 score = 0;
